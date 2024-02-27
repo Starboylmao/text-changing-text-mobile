@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="UTF-8">
+  <title>Text-changing-text</title>
+  <link rel="stylesheet" href="./style.css">
+<style>
+  @import url("https://fonts.googleapis.com/css?family=Raleway:400,400i,700");
+body {
+  margin: 0;
+  padding: 0;
+  background: rgb(255, 255, 255);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: Raleway, sans-serif;
+  font-size: 25px;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.changebox {
+  margin: 0 5px;
+  color: #FF5722;
+  overflow: hidden;
+  transition: .5s;
+  white-space: nowrap;
+  max-width: 90%; /* Adjust the maximum width as needed */
+}
+
+   
+</style>
+</head>
+<body>
+<!-- partial:index.partial.html -->
+<p>
+   shop 
+<div class="changebox">
+   <span>air jordans </span><br>
+   <span>nike dunk sb</span><br>
+   <span>adidas yeezy</span><br>
+   <span>air force 1's</span><br>
+   <span>nike air max</span><br>
+</div> 
+from us!
+</p>
+<!-- partial -->
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js'></script><script  src="./script.js"></script>
+<script>
+
+$(document).ready(function(){
+   var changebox = $(".changebox");
+   
+   var firstclone = changebox.children(":first").clone();
+   changebox.append(firstclone);
+   
+   var fsstr = changebox.parent().css("font-size");
+   fsstr = fsstr.slice(0,fsstr.indexOf("p"));
+   var fs = parseInt(fsstr);
+   
+   changebox.css("height",changebox.parent().css("font-size") );
+   ChangeSize(0);
+   var intervalID = setInterval(Next,3500); // Increase delay between animations
+   
+   function Next(){
+      if( typeof Next.i == 'undefined' ) {
+        Next.i = 0;
+      }
+      Next.i++;
+      if(Next.i == changebox.children("span").length){
+         Next.i = 1;
+         changebox.scrollTop(0);
+      }
+      changebox.animate({scrollTop: (fs*Next.i)+Next.i*5+3},800); // Adjust animation duration
+      setTimeout(function(){
+         ChangeSize(Next.i);
+      },800); // Adjust timeout duration
+   }
+   
+   function ChangeSize(i){
+      var word = changebox.children("span").eq(i);
+      var wordsize = word.css("width");
+      changebox.css("width",wordsize);
+   }
+   
+   // Clear previous interval before setting a new one
+   changebox.hover(function() {
+      clearInterval(intervalID);
+   }, function() {
+      intervalID = setInterval(Next, 1500); // Adjust interval delay
+   });
+});
+
+</script>
+</body>
+</html>
